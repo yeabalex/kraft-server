@@ -1,16 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import express from 'express'
+import { userRoute } from "./routes/user";
 
-const prisma = new PrismaClient();
 
-async function main() {
-    try {
-        const allUsers = await prisma.user.findMany()
-        console.log(allUsers)
-    } catch (error) {
-        console.error("Error creating user:", error);
-    } finally {
-        await prisma.$disconnect();
-    }
-}
+const app = express()
+const PORT: any = process.env.PORT?process.env.PORT:3000
 
-main();
+app.use(express.json())
+app.use(userRoute)
+
+
+
+app.listen(PORT, ()=>{
+    console.log('Server running on port', PORT)
+})
