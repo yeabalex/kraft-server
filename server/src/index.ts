@@ -1,5 +1,5 @@
 import express from 'express'
-import { userRoute } from "./routes/user";
+import { userRoute } from "./routes/account/user";
 import passport from 'passport'
 import session from 'express-session'
 
