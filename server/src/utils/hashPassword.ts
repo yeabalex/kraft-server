@@ -7,6 +7,6 @@ export function hash(password: string){
     return bcrypt.hashSync(password, salt)
 }
 
-export function compare(plain: string, hashed: string){
+export function compare(plain: string, hashed:any){
     return bcrypt.compareSync(plain, hashed)
 }
