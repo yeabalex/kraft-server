@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" BIGSERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "firstName" VARCHAR(100) NOT NULL,
     "lastName" VARCHAR(100) NOT NULL,
     "email" VARCHAR(100) NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "PersonalInfo" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "firstName" VARCHAR(100),
     "lastName" VARCHAR(100),
     "dateOfBirth" TIMESTAMP(3),
@@ -32,8 +32,8 @@ CREATE TABLE "PersonalInfo" (
 
 -- CreateTable
 CREATE TABLE "Cv" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "title" VARCHAR(100) NOT NULL,
     "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -44,8 +44,8 @@ CREATE TABLE "Cv" (
 
 -- CreateTable
 CREATE TABLE "Education" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "credential" VARCHAR(100) NOT NULL,
     "organization" VARCHAR(100) NOT NULL,
     "city" VARCHAR(100),
@@ -58,8 +58,8 @@ CREATE TABLE "Education" (
 
 -- CreateTable
 CREATE TABLE "WorkExperience" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "position" VARCHAR(100) NOT NULL,
     "company" VARCHAR(100) NOT NULL,
     "city" VARCHAR(100),
@@ -73,8 +73,8 @@ CREATE TABLE "WorkExperience" (
 
 -- CreateTable
 CREATE TABLE "TechnicalSkill" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "group" VARCHAR(100),
     "skill" VARCHAR(100),
 
@@ -83,8 +83,8 @@ CREATE TABLE "TechnicalSkill" (
 
 -- CreateTable
 CREATE TABLE "SoftSkill" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "skill" VARCHAR(100) NOT NULL,
 
     CONSTRAINT "SoftSkill_pkey" PRIMARY KEY ("id")
@@ -92,8 +92,8 @@ CREATE TABLE "SoftSkill" (
 
 -- CreateTable
 CREATE TABLE "Certification" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "from" TIMESTAMP(3),
     "to" TIMESTAMP(3),
@@ -104,8 +104,8 @@ CREATE TABLE "Certification" (
 
 -- CreateTable
 CREATE TABLE "Language" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "langName" VARCHAR(100) NOT NULL,
     "proficiency" VARCHAR(50),
 
@@ -114,8 +114,8 @@ CREATE TABLE "Language" (
 
 -- CreateTable
 CREATE TABLE "Project" (
-    "id" BIGSERIAL NOT NULL,
-    "userId" BIGINT NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "title" VARCHAR(100) NOT NULL,
     "from" TIMESTAMP(3),
     "to" TIMESTAMP(3),
