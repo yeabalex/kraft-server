@@ -1,46 +1,46 @@
 import { PrismaClient } from "@prisma/client";
 import { compare } from "../utils/hashPassword";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 interface User {
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
 }
 
-export async function userExists(user: User){
-   try{ 
-    const exists = await prisma.user.findUnique({
-        where:{
-            email:user.email
-        }
-    })
-    return exists?true:false
-}catch(err){
-    console.error(err)
-}finally{
-    prisma.$disconnect()
-}
+export async function userExists(user: User) {
+    try {
+        const exists = await prisma.user.findUnique({
+            where: {
+                email: user.email,
+            },
+        });
+        return exists ? true : false;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await prisma.$disconnect();
+    }
 }
 
-export async function createUser(user: User){
-    try{
-       await prisma.user.create({
-            data:{
+export async function createUser(user: User) {
+    try {
+        await prisma.user.create({
+            data: {
                 id: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                password: user.password
-            }
-        })
-    }catch(err){
-        console.error(err)
-    }finally{
-        prisma.$disconnect()
+                password: user.password,
+            },
+        });
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -49,7 +49,7 @@ export async function login(email: string, password: string) {
         const loggedUser = await prisma.user.findUnique({
             where: {
                 email: email,
-            }
+            },
         });
 
         if (loggedUser && compare(password, loggedUser.password)) {
@@ -58,19 +58,39 @@ export async function login(email: string, password: string) {
 
         return null;
     } catch (err) {
-        console.error('Error logging in:', err);
+        console.error("Error logging in:", err);
         return null;
     } finally {
         await prisma.$disconnect();
     }
 }
 
-export async function findById(id:any) {
+export async function findById(id: any) {
     const userById = prisma.user.findUnique({
-        where:{
-            id:id
-        }
-    })
+        where: {
+            id: id,
+        },
+    });
 
-    return userById
+    return userById;
+}
+
+export async function deleteAccount(email:string, password:string){
+    const loggedUser = await prisma.user.findUnique({
+        where: {
+            email: email,
+        },
+    });
+
+    if (loggedUser && compare(password, loggedUser.password)) {
+        const deletedAccount = await prisma.user.delete({
+            where:{
+                email:email
+            }
+        })
+        return deletedAccount
+    }
+
+    return null
+
 }
