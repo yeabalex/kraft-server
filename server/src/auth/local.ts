@@ -1,7 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
 import { login } from "../postgres/user";
-import { response } from "express";
 import { findById } from "../postgres/user";
 
 

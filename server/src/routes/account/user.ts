@@ -32,7 +32,7 @@ userRoute.get('/api/auth/login/status', async (request: any, response: any) => {
     response.status(200).send(await request.user);
 });
 
-userRoute.post('/api/account/logout', (request:any, response:any) => {
+userRoute.post('/api/auth/logout', (request:any, response:any) => {
     request.logout((err:any) => {
         if (err) {
             return response.status(500).send('Failed to log out.');
@@ -41,13 +41,13 @@ userRoute.post('/api/account/logout', (request:any, response:any) => {
             if (err) {
                 return response.status(500).send('Failed to destroy session.');
             }
-            response.clearCookie('connect.sid', { path: '/api/account/' });
+            response.clearCookie('connect.sid', { path: '/api/auth/' });
             response.status(200).send('Logged out successfully.');
         });
     });
 });
 
-userRoute.delete('/api/account/delete',async (request: any, response: any)=>{
+userRoute.delete('/api/auth/delete',async (request: any, response: any)=>{
     const sess = await request.user
     
     if (!sess){

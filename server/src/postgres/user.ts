@@ -94,3 +94,34 @@ export async function deleteAccount(email:string, password:string){
     return null
 
 }
+
+export async function findByEmail(email:string) {
+    const user = await prisma.user.findUnique({
+        where:{
+            email:email
+        }
+    })
+    
+    return user?user:null
+}
+
+export class UpdateUserInfo {
+    userId: any;
+    constructor(userId:any){
+        this.userId=userId
+    }
+    
+   async updatePassword(newPassword: string){
+    try{
+        const updatedUser = await prisma.user.update({
+            where:{id: this.userId},
+            data:{password: newPassword}
+        })
+        return updatedUser
+    }catch(err){
+        console.error(err)
+    }finally{
+        prisma.$disconnect()
+    }
+    }
+}
