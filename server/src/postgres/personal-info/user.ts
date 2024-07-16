@@ -14,25 +14,13 @@ export class EditPersonalInfo {
        try{ 
         const addedInfo = await prisma.personalInfo.create({
             data:{
-                id: userInfo.id,
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                dateOfBirth: new Date(userInfo.dateOfBirth),
-                aboutMe: userInfo.aboutMe,
-                email: userInfo.email,
-                phoneNumber: userInfo.phoneNumber,
-                linkedin: userInfo.linkedin,
-                website: userInfo.website,
-                addressLine1: userInfo.addressLine1,
-                addressLine2: userInfo.addressLine2,
-                city: userInfo.city,
-                country: userInfo.country,
-                image: userInfo.image,
+                ...userInfo, 
                 user: {
                     connect: {
                         id: this.user.id
                     }
-                }
+                },
+                dateOfBirth: new Date(userInfo.dateOfBirth)
             }
         })
 
@@ -44,8 +32,51 @@ export class EditPersonalInfo {
     }
     }
 
+    async getInfo(){
+        try{
+            const infoExists = await prisma.personalInfo.findUnique({
+                where:{
+                    userId: this.user.id
+                }
+            })   
+            
+            return infoExists?true:false
+        }catch(err){
+            console.error(err)
+        }finally{
+            prisma.$disconnect()
+        }
+    }
+
     async updateInfo(fields: any){
-        
+        try{
+            const updatedInfo = await prisma.personalInfo.update({
+                where:{userId:this.user.id},
+                data:{
+                    ...fields, dateOfBirth:new Date(fields.dateOfBirth)
+                }
+            })
+            return updatedInfo
+        }catch(err){
+            console.error(err)
+        }finally{
+            prisma.$disconnect()
+        }
+    }
+
+    async deletePersonalInfo(){
+        try{
+            const deletedInfo = await prisma.personalInfo.delete({
+                where: {
+                    userId: this.user.id
+                }
+            })
+            return deletedInfo
+        }catch(err){
+            console.error(err)
+        }finally{
+            prisma.$disconnect()
+        }
     }
 
 }
