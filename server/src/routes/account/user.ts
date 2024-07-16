@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { createUser, userExists } from "../../postgres/user";
+import { createUser, userExists } from "../../postgres/account/user";
 import { checkSchema, matchedData, validationResult } from "express-validator";
 import { signUpSchema } from "../../utils/signUpValidation";
 import { hash } from "../../utils/hashPassword";
 import { v4 as uuidv4 } from "uuid";
 import passport from "../../auth/local";
-import { deleteAccount } from "../../postgres/user";
+import { deleteAccount } from "../../postgres/account/user";
 
 export const userRoute = Router();
 

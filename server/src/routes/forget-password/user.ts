@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { userExists } from "../../postgres/user";
+import { userExists } from "../../postgres/account/user";
 import nodemailer from 'nodemailer';
 import session from "express-session";
-import { findByEmail } from "../../postgres/user";
+import { findByEmail } from "../../postgres/account/user";
 import { hash } from "../../utils/hashPassword";
-import { UpdateUserInfo } from "../../postgres/user";
+import { UpdateUserInfo } from "../../postgres/account/user";
 import { body, validationResult } from "express-validator";
 
 export const forgotPassword = Router();

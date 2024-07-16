@@ -3,6 +3,7 @@ import { userRoute } from "./routes/account/user";
 import passport from 'passport'
 import session from 'express-session'
 import { forgotPassword } from './routes/forget-password/user';
+import { personalInfoRoute } from './routes/personal-info/user';
 
 const app = express()
 const PORT: any = process.env.PORT?process.env.PORT:3000
@@ -18,6 +19,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(userRoute)
 app.use(forgotPassword)
+app.use(personalInfoRoute)
 
 
 

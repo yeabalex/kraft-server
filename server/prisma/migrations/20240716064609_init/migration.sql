@@ -125,8 +125,35 @@ CREATE TABLE "Project" (
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "TestResult" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "testName" VARCHAR(100) NOT NULL,
+    "score" DOUBLE PRECISION NOT NULL,
+    "dateTaken" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TestResult_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Volunteer" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "organization" VARCHAR(100) NOT NULL,
+    "role" VARCHAR(100) NOT NULL,
+    "description" TEXT,
+    "from" TIMESTAMP(3),
+    "to" TIMESTAMP(3),
+
+    CONSTRAINT "Volunteer_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PersonalInfo_userId_key" ON "PersonalInfo"("userId");
 
 -- AddForeignKey
 ALTER TABLE "PersonalInfo" ADD CONSTRAINT "PersonalInfo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -154,3 +181,9 @@ ALTER TABLE "Language" ADD CONSTRAINT "Language_userId_fkey" FOREIGN KEY ("userI
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TestResult" ADD CONSTRAINT "TestResult_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Volunteer" ADD CONSTRAINT "Volunteer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

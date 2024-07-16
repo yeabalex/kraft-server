@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { compare } from "../utils/hashPassword";
+import { compare } from "../../utils/hashPassword";
 
 const prisma = new PrismaClient();
 

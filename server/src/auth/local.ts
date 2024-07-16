@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
-import { login } from "../postgres/user";
-import { findById } from "../postgres/user";
+import { login } from "../postgres/account/user";
+import { findById } from "../postgres/account/user";
 
 
 passport.serializeUser((user:any,done)=>{
