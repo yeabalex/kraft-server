@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Cv" ALTER COLUMN "content" DROP NOT NULL;
