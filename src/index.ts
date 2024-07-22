@@ -13,10 +13,18 @@ import { languageRoute } from './routes/language-skill/user';
 import { projectRoute } from './routes/projects/user';
 import { testResultRoute } from './routes/test-result/user';
 import { volunteerRoute } from './routes/volunteer/user';
-import { cvRoutes } from './routes/cv/user';
+//import { cvRoutes } from './routes/cv/user';
+import { templateRoute } from './routes/template/template';
+
+const path = require('path')
 
 const app = express()
 const PORT: any = process.env.PORT?process.env.PORT:3000
+
+app.set('view engine', 'ejs');
+app.set('views', './src/routes/template/views'); 
+app.use('/static', express.static(path.join(__dirname, 'public'))) 
+
 app.use(express.json())
 app.use(session({
     secret: 'iamyeabsira',
@@ -39,7 +47,8 @@ app.use(languageRoute)
 app.use(projectRoute)
 app.use(testResultRoute)
 app.use(volunteerRoute)
-app.use(cvRoutes)
+//app.use(cvRoutes)
+app.use(templateRoute)
 
 app.listen(PORT, ()=>{
     console.log('Server running on port', PORT)

@@ -1,0 +1,135 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+  }
+  
+  .profile-photo img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .profile-info {
+    flex: 1;
+  }
+  
+  .heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .heading-light {
+    color: #333;
+  }
+  
+  .heading_dark {
+    color: #000;
+  }
+  
+  .profile-text {
+    margin: 0 0 20px;
+  }
+  
+  .contacts-item {
+    margin-bottom: 10px;
+  }
+  
+  .contacts-title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .contacts-text {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .contacts-text:hover {
+    text-decoration: underline;
+  }
+  
+  .address {
+    margin-top: 10px;
+  }
+  
+  .languages p, .projects p, .certifications p, .test-results p, .volunteer p {
+    margin: 5px 0;
+  }
+  
+  .resume-wrap {
+    margin-top: 20px;
+  }
+  
+  .experience, .education, .skills, .projects, .certifications, .test-results, .volunteer {
+    margin-bottom: 20px;
+  }
+  
+  .experience div, .education div, .skills div, .projects div, .certifications div, .test-results div, .volunteer div {
+    margin-bottom: 15px;
+  }
+  
+  .name {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .position {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .about-address {
+    margin: 10px 0;
+  }
+  
+  .about-contacts p {
+    margin: 5px 0;
+  }
+  
+  .skills h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .projects a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .projects a:hover {
+    text-decoration: underline;
+  }
+  
+  .certifications a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .certifications a:hover {
+    text-decoration: underline;
+  }
+  

@@ -9,7 +9,7 @@ export class CV{
         this.user=user
     }
 
-   private async cvContents(){
+    async cvContents() {
         try{
         const cvData = await prisma.user.findMany({
             where:{
@@ -29,50 +29,13 @@ export class CV{
                 workExperiences: true,
             }
         })
-        return cvData
+        return JSON.stringify(cvData, null, 2)
     }catch(err){
         console.error(err)
+        return 'nil'
     }finally{
         prisma.$disconnect()
     }
     }
 
-    async createCV(cvBody: any){
-        const createdCV = await prisma.cv.create({
-            data:{
-                title: cvBody.title,
-                id: cvBody.id,
-                user: {
-                    connect: {
-                        id: this.user.id
-                    }
-                },
-                content: await this.cvContents()?this.cvContents.toString():'Not available'
-            }
-        })
-
-        
-        return createdCV
-    }
-
-    async getCV(){
-        const cv = await prisma.cv.findUnique({
-            where:{
-                id: this.user.id
-            }
-        })
-        return cv
-    }
-
-    async updateCV(fields: any){
-        const updatedCV = prisma.cv.update({
-            where: {
-                id: this.user.id
-            },
-            data:{
-                ...fields
-            }
-        })
-    }
-    
 }
