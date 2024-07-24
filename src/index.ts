@@ -13,7 +13,7 @@ import { languageRoute } from './routes/language-skill/user';
 import { projectRoute } from './routes/projects/user';
 import { testResultRoute } from './routes/test-result/user';
 import { volunteerRoute } from './routes/volunteer/user';
-//import { cvRoutes } from './routes/cv/user';
+import { cvRoutes } from './routes/cv/user';
 import { templateRoute } from './routes/template/template';
 
 const path = require('path')
@@ -47,7 +47,7 @@ app.use(languageRoute)
 app.use(projectRoute)
 app.use(testResultRoute)
 app.use(volunteerRoute)
-//app.use(cvRoutes)
+app.use(cvRoutes)
 app.use(templateRoute)
 
 app.listen(PORT, ()=>{

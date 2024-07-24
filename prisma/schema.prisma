@@ -60,7 +60,7 @@ model Cv {
 
 model Template {
   id    String  @id @default(uuid())
-  name  String  @db.VarChar(100)
+  name  String  @db.VarChar(100) @unique
   cvs   Cv[]
 }
 
