@@ -17,28 +17,27 @@ import { cvRoutes } from './routes/cv/user';
 import { templateRoute } from './routes/template/template';
 import cors from 'cors'
 
+
 const path = require('path')
 
 const app = express()
 const PORT: any = 3001
-
+app.use(cors({
+  origin: ['https://kraftwerk.vercel.app', 'http://localhost:3000'],
+  credentials: true,
+}))
 app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
-app.use(cors({
-  origin: 'https://kraftwerk.vercel.app',
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
-}))
+
 
 app.use(express.json())
 app.use(session({
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60, sameSite: 'none', httpOnly: true}
+    cookie: { maxAge: 60000*60, sameSite: 'lax',}
   }));
-app.set("trust proxy", 1);
 
 app.use(passport.initialize())
 app.use(passport.session())
