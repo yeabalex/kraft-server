@@ -36,7 +36,7 @@ app.use(session({
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60, sameSite: 'lax'}
+    cookie: { maxAge: 60000*60, sameSite: 'none'}
   }));
 
 app.use(passport.initialize())
