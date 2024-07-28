@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { EditTestResult } from "../../postgres/test-result/user"; // Adjust import path as per your project structure
+import { EditTestResult } from "../../postgres/test-result/user";
 import { body, validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 
 export const testResultRoute = Router();
 
-// Endpoint to add test result information
 testResultRoute.post('/api/add/test-result',
     body('testName').notEmpty().withMessage('Test name is required'),
     body('score').isFloat({ min: 0 }).withMessage('Score must be a positive number'),

@@ -15,22 +15,28 @@ import { testResultRoute } from './routes/test-result/user';
 import { volunteerRoute } from './routes/volunteer/user';
 import { cvRoutes } from './routes/cv/user';
 import { templateRoute } from './routes/template/template';
+import cors from 'cors'
 
 const path = require('path')
 
 const app = express()
-const PORT: any = process.env.PORT?process.env.PORT:3000
+const PORT: any = 3001
 
 app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+
+}))
 
 app.use(express.json())
 app.use(session({
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60}
+    cookie: { maxAge: 60000*60, sameSite: 'lax'}
   }));
 
 app.use(passport.initialize())

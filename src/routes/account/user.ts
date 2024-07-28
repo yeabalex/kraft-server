@@ -21,14 +21,20 @@ userRoute.post('/api/auth/signup', checkSchema(signUpSchema), async (request: an
 
     await createUser(userData);
 
-    return response.status(200).send('created');
+    return response.sendStatus(200);
 });
 
-userRoute.post('/api/auth/login', passport.authenticate('local'), (request: any, response: any) => {
-    response.sendStatus(200);
+userRoute.post('/api/auth/login', passport.authenticate('local'), (request: any, res: any) => {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, authorization')
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
+    res.setHeader('Access-Control-Allow-METHODS',"GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
+    res.sendStatus(200);
 });
 
 userRoute.get('/api/auth/login/status', async (request: any, response: any) => {
+    if(!await request.user) return response.sendStatus(401);
     response.status(200).send(await request.user);
 });
 
