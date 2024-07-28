@@ -26,7 +26,7 @@ app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://kraftwerk.vercel.app',
   credentials: true,
 
 }))
