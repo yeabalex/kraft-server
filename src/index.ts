@@ -28,7 +28,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(cors({
   origin: 'https://kraftwerk.vercel.app',
   credentials: true,
-
+  allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 app.use(express.json())
@@ -36,7 +36,7 @@ app.use(session({
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60, sameSite: 'none'}
+    cookie: { maxAge: 60000*60, sameSite: 'none', httpOnly: true, secure: true}
   }));
 
 app.use(passport.initialize())

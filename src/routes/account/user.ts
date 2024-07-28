@@ -28,7 +28,7 @@ userRoute.post('/api/auth/login', passport.authenticate('local'), (request: any,
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, authorization')
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin','https://kraftwerk.vercel.app/');
+    res.setHeader('Access-Control-Allow-Origin','https://kraftwerk.vercel.app');
     res.setHeader('Access-Control-Allow-METHODS',"GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
     res.sendStatus(200);
 });
