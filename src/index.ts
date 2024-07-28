@@ -33,10 +33,11 @@ app.use(cors({
 
 app.use(express.json())
 app.use(session({
+    name: 'connect.sid',
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60, sameSite: 'none', httpOnly: true, secure: true}
+    cookie: { maxAge: 60000*60, sameSite: 'lax', httpOnly: true, secure: true}
   }));
 
 app.use(passport.initialize())
