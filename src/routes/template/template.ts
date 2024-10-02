@@ -7,7 +7,10 @@ import { body, validationResult } from "express-validator";
 
 export const templateRoute = Router();
 
-
+templateRoute.use((error:any, req:any, res:any, next:any) => {
+    console.error('Unhandled error:', error);
+    res.status(500).send('An unexpected error occurred');
+});
 templateRoute.get('/api/templates', async (req, res)=>{
     if(!req.user) return res.sendStatus(403);
 
@@ -18,7 +21,9 @@ templateRoute.get('/api/templates', async (req, res)=>{
     
 })
 
-templateRoute.get('/api/templates/:templateName', async (request, response) => {
+templateRoute.get('/api/templates/:templateName', async (request, response)=> {
+	if(!request.user) return response.sendStatus(403);
+
     const templateName = request.params.templateName
     const cv = new EditPersonalInfo(await request.user);
     const getTemplate = new Template(await request.user);
@@ -27,7 +32,7 @@ templateRoute.get('/api/templates/:templateName', async (request, response) => {
 
     const data = await s.cvContents()
     const jsonData = await JSON.parse(data)
-    console.log(jsonData[0])
+   // console.log(jsonData[0])
     
     response.render(`template-1/${templateName}`, {...jsonData[0]});
 });
