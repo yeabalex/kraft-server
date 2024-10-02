@@ -29,21 +29,17 @@ app.use(cors({
 app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
-<<<<<<< HEAD
-
-=======
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://kraftwerk.vercel.app',
   credentials: true,
 }))
->>>>>>> stable-local
 
 app.use(express.json())
 app.use(session({
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60, sameSite: 'lax',}
+    cookie: { maxAge: 60000*60, sameSite: 'none', secure: true}
   }));
 
 app.use(passport.initialize())

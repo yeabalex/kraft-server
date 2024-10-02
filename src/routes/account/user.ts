@@ -24,27 +24,9 @@ userRoute.post('/api/auth/signup', checkSchema(signUpSchema), async (request: an
     return response.sendStatus(200);
 });
 
-<<<<<<< HEAD
-userRoute.post('/api/auth/login', (req, res, next) => {
-    passport.authenticate('local', (err: any, user: any, info: any) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ message: info.message });
-
-        req.logIn(user, (err) => {
-            if (err) return next(err);
-            res.setHeader('Access-Control-Allow-Credentials', 'true');
-            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, authorization');
-            res.setHeader('Content-Type', 'application/json');
-            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-            res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH');
-            res.status(200).json({ message: 'Login successful' });
-        });
-    })(req, res, next);
-=======
 userRoute.post('/api/auth/login', passport.authenticate('local'), (request: any, res: any) => {
     
     res.sendStatus(200);
->>>>>>> stable-local
 });
 
 
