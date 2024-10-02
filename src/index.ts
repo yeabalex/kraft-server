@@ -21,7 +21,7 @@ import cors from 'cors'
 const path = require('path')
 
 const app = express()
-const PORT: any = 3001
+const PORT: any = process.env.PORT
 app.use(cors({
   origin: ['https://kraftwerk.vercel.app', 'http://localhost:3000'],
   credentials: true,
@@ -29,10 +29,7 @@ app.use(cors({
 app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
-app.use(cors({
-  origin: 'https://kraftwerk.vercel.app',
-  credentials: true,
-}))
+
 
 app.use(express.json())
 app.use(session({
