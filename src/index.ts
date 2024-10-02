@@ -2,6 +2,8 @@ import express from 'express'
 import { userRoute } from "./routes/account/user";
 import passport from 'passport'
 import session from 'express-session'
+import { createClient } from 'redis'
+import connectRedis from 'connect-redis'
 import { forgotPassword } from './routes/forget-password/user';
 import { personalInfoRoute } from './routes/personal-info/user';
 import { educationRoute } from './routes/education/user';
@@ -21,7 +23,16 @@ import cors from 'cors'
 const path = require('path')
 
 const app = express()
-const PORT: any = process.env.PORT
+const PORT: any = process.env.PORT || 3000
+
+// Redis client setup
+const redisClient = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+})
+redisClient.connect().catch(console.error)
+// Redis store
+const RedisStore = new connectRedis({ client: redisClient })
+
 app.use(cors({
   origin: ['https://kraftwerk.vercel.app', 'http://localhost:3000'],
   credentials: true,
@@ -33,6 +44,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.use(express.json())
 app.use(session({
+    store: RedisStore,
     secret: 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
