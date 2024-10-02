@@ -5,9 +5,23 @@ const prisma = new PrismaClient();
 export class CV{
     user : any
     template: any
-    constructor(user: any, template: any){
+
+    constructor(user: any, template?: any){
         this.user=user
         this.template=template
+    }
+
+    async getCv() {
+        try{
+            const foundCv = await prisma.cv.findUnique({
+                where:{
+                    id:this.user.id
+                }
+            })
+            return foundCv;
+        }catch(err){
+            console.error(err)
+        }
     }
 
     async cvContents() {

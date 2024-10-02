@@ -24,6 +24,7 @@ userRoute.post('/api/auth/signup', checkSchema(signUpSchema), async (request: an
     return response.sendStatus(200);
 });
 
+<<<<<<< HEAD
 userRoute.post('/api/auth/login', (req, res, next) => {
     passport.authenticate('local', (err: any, user: any, info: any) => {
         if (err) return next(err);
@@ -39,6 +40,11 @@ userRoute.post('/api/auth/login', (req, res, next) => {
             res.status(200).json({ message: 'Login successful' });
         });
     })(req, res, next);
+=======
+userRoute.post('/api/auth/login', passport.authenticate('local'), (request: any, res: any) => {
+    
+    res.sendStatus(200);
+>>>>>>> stable-local
 });
 
 

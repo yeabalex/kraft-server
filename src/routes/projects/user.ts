@@ -1,27 +1,34 @@
 import { Router } from "express";
 import { EditProject } from "../../postgres/projects/user"; 
-import { body, validationResult } from "express-validator";
+import { body, validationResult, check } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 
 export const projectRoute = Router();
 
 // Endpoint to add project information
 projectRoute.post('/api/add/project',
-    body('title').notEmpty().withMessage('Title is required'),
+    check('arr.*.title')
+        .notEmpty().withMessage('Title is required')
+        .isString().withMessage('Title must be a string'),
     async (request: any, response: any) => {
         try {
+            console.log(await request.body, "from server");
             if (!request.user) return response.status(400).send('Unauthorized');
-    
+
             const errors = validationResult(request);
             if (!errors.isEmpty()) return response.status(400).json({ errors: errors.array() });
-    
-            request.body.id = uuidv4();
-            request.body.userId = request.user.id;
-    
-            const editProject = new EditProject(await request.user);
-            const addedProject = await editProject.addInfo(request.body);
-    
-            return response.json(addedProject);
+
+            const res = [];
+            for (const req of request.body.arr) {
+                req.id = uuidv4();
+                req.userId = request.user.id;
+
+                const editProject = new EditProject(await request.user);
+                const addedProject = await editProject.addInfo(req);
+                res.push(addedProject);
+            }
+
+            return response.json(res);
         } catch (error) {
             console.error("Error adding project:", error);
             return response.status(500).send("Internal Server Error");
@@ -39,15 +46,29 @@ projectRoute.get('/api/user/project', async (request: any, response: any) => {
 
 // Endpoint to update project information
 projectRoute.put('/api/update/project',
-    body('title').notEmpty().withMessage('Title is required'),
+    check('arr.*.title')
+        .notEmpty().withMessage('Title is required')
+        .isString().withMessage('Title must be a string'),
     async (request: any, response: any) => {
-        if (!request.user) return response.status(400).send('Unauthorized');
+        try {
+            if (!request.user) return response.status(400).send('Unauthorized');
 
-        const updateProject = new EditProject(await request.user);
+            const errors = validationResult(request);
+            if (!errors.isEmpty()) return response.status(400).json({ errors: errors.array() });
 
-        const updatedProject = await updateProject.updateProjectInfo(request.body, request.query.id);
+            const updateProject = new EditProject(await request.user);
+            const updatedResponse = [];
 
-        return response.send(updatedProject);
+            for (const req of request.body.arr) {
+                const updatedProject = await updateProject.updateProjectInfo(req, req.id);
+                updatedResponse.push(updatedProject);
+            }
+
+            return response.send(updatedResponse);
+        } catch (error) {
+            console.error("Error updating project:", error);
+            return response.status(500).send("Internal Server Error");
+        }
     });
 
 // Endpoint to delete project information

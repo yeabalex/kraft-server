@@ -29,7 +29,14 @@ app.use(cors({
 app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
+<<<<<<< HEAD
 
+=======
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}))
+>>>>>>> stable-local
 
 app.use(express.json())
 app.use(session({

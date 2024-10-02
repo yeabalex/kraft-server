@@ -1,33 +1,39 @@
 import { request, Router } from "express";
 import { EditCertification } from "../../postgres/certification/user"; // Adjust import path as per your project structure
-import { body, validationResult } from "express-validator";
+import { body, validationResult, check } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 
 export const certificationRoute = Router();
 
 // Endpoint to add certification information
 certificationRoute.post('/api/add/certification',
-    body('name').notEmpty().withMessage('Name is required'),
+    check('arr.*.name')
+        .notEmpty().withMessage('Name is required')
+        .isString().withMessage('Name must be a string'),
     async (request: any, response: any) => {
         try {
+            console.log(await request.body, "from server");
             if (!request.user) return response.status(400).send('Unauthorized');
-    
+
             const errors = validationResult(request);
             if (!errors.isEmpty()) return response.status(400).json({ errors: errors.array() });
-    
-            request.body.id = uuidv4();
-            request.body.userId = request.user.id;
-    
-            const editCertification = new EditCertification(await request.user);
-            const addedCertification = await editCertification.addInfo(request.body);
-    
-            return response.json(addedCertification);
+
+            const res = [];
+            for (const req of request.body.arr) {
+                req.id = uuidv4();
+                req.userId = request.user.id;
+
+                const editCertification = new EditCertification(await request.user);
+                const addedCertification = await editCertification.addInfo(req);
+                res.push(addedCertification);
+            }
+
+            return response.json(res);
         } catch (error) {
             console.error("Error adding certification:", error);
             return response.status(500).send("Internal Server Error");
         }
     });
-
 // Endpoint to get certification information
 certificationRoute.get('/api/user/certification', async (request: any, response: any) => {
     if (!request.user) return response.status(400).send('Unauthorized');
@@ -39,17 +45,30 @@ certificationRoute.get('/api/user/certification', async (request: any, response:
 
 // Endpoint to update certification information
 certificationRoute.put('/api/update/certification',
-    body('name').notEmpty().withMessage('Name is required'),
+    check('arr.*.name')
+        .notEmpty().withMessage('Name is required')
+        .isString().withMessage('Name must be a string'),
     async (request: any, response: any) => {
-        if (!request.user) return response.status(400).send('Unauthorized');
+        try {
+            if (!request.user) return response.status(400).send('Unauthorized');
 
-        const updateCertification = new EditCertification(await request.user);
+            const errors = validationResult(request);
+            if (!errors.isEmpty()) return response.status(400).json({ errors: errors.array() });
 
-        const updatedCertification = await updateCertification.updateCertificationInfo(request.body, request.query.id);
+            const updateCertification = new EditCertification(await request.user);
+            const updatedResponse = [];
 
-        return response.send(updatedCertification);
+            for (const req of request.body.arr) {
+                const updatedCertification = await updateCertification.updateCertificationInfo(req, req.id);
+                updatedResponse.push(updatedCertification);
+            }
+
+            return response.send(updatedResponse);
+        } catch (error) {
+            console.error("Error updating certification:", error);
+            return response.status(500).send("Internal Server Error");
+        }
     });
-
 // Endpoint to delete certification information
 certificationRoute.delete('/api/delete/certification', async (request: any, response: any) => {
     if (!request.user) return response.status(400).send('Unauthorized');

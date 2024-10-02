@@ -25,11 +25,18 @@ cvRoutes.delete('/api/delete/cv/:template', async (req, res)=>{
     if (!req.user) return res.sendStatus(403);
     
     const templateName = req.params.template;
-
     const findTemplate = new Template(await req.user)
     const foundTemplate = await findTemplate.getTemplate(templateName)
     const deletedCV = new CV(await req.user, foundTemplate);
-
     return res.send(await deletedCV.deleteCV(req.query.id))
 
+})
+
+cvRoutes.get('/api/get/cvs', async (req, res)=>{
+    if(!req.isAuthenticated()) return res.sendStatus(403);
+
+    const cv = new CV(await req.user)
+    const userCv = await cv.getCv();
+    if(!userCv)return res.send("n");
+    return res.send("y");
 })
