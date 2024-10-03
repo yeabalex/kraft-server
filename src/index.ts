@@ -16,7 +16,7 @@ import { volunteerRoute } from './routes/volunteer/user';
 import { cvRoutes } from './routes/cv/user';
 import { templateRoute } from './routes/template/template';
 import cors from 'cors'
-
+import connectPgSimple from 'connect-pg-simple'
 
 const path = require('path')
 
@@ -35,15 +35,22 @@ app.set('view engine', 'ejs');
 app.set('views', './src/routes/template/views'); 
 app.use('/static', express.static(path.join(__dirname, 'public'))) 
 
-
 app.use(express.json())
+
+const PgSession = connectPgSimple(session)
+
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'iamyeabsira',
+    store: new PgSession({
+        conString: process.env.DATABASE_URL,
+        tableName: 'session'
+    }),
+    secret: 'iamyeabsira',
     resave: false,
+    proxy: true,
     saveUninitialized: false,
     cookie: { 
-        maxAge: 60000 * 60, 
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        maxAge: 1000 * 60 *60 * 24, 
+        sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
