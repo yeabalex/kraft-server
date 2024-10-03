@@ -1,26 +1,30 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, WorkExperience } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-export class EditWorkExperience {
-    user: any;
+interface User {
+  id: string;
+}
 
-    constructor(userObject: any) {
+export class EditWorkExperience {
+    user: User;
+
+    constructor(userObject: User) {
         this.user = userObject;
     }
 
-    async addInfo(workExperienceInfo: any) {
+    async addInfo(workExperienceInfo: Omit<WorkExperience, 'id' | 'userId'>) {
         try {
-            const { userId, ...restInfo } = workExperienceInfo;
             const addedInfo = await prisma.workExperience.create({
                 data: {
-                    ...restInfo,
+                    ...workExperienceInfo,
                     user: {
                         connect: {
                             id: this.user.id
                         }
                     },
-                    from: restInfo.from ? new Date(restInfo.from) : undefined,
-                    to: restInfo.to ? new Date(restInfo.to) : undefined
+                    from: workExperienceInfo.from ? new Date(workExperienceInfo.from) : undefined,
+                    to: workExperienceInfo.to ? new Date(workExperienceInfo.to) : undefined
                 }
             });
             return addedInfo;
@@ -32,7 +36,7 @@ export class EditWorkExperience {
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<WorkExperience[]> {
         try {
             const infoExists = await prisma.workExperience.findMany({
                 where: {
@@ -48,15 +52,14 @@ export class EditWorkExperience {
         }
     }
 
-    async updateWorkExperienceInfo(fields: any, id: string) {
+    async updateWorkExperienceInfo(fields: Partial<Omit<WorkExperience, 'id' | 'userId'>>, id: string): Promise<WorkExperience> {
         try {
-            const { userId, ...restFields } = fields;
             const updatedWorkExperience = await prisma.workExperience.update({
                 where: { id },
                 data: {
-                    ...restFields,
-                    from: restFields.from ? new Date(restFields.from) : undefined,
-                    to: restFields.to ? new Date(restFields.to) : undefined
+                    ...fields,
+                    from: fields.from ? new Date(fields.from) : undefined,
+                    to: fields.to ? new Date(fields.to) : undefined
                 }
             });
             return updatedWorkExperience;
@@ -68,7 +71,7 @@ export class EditWorkExperience {
         }
     }
 
-    async deleteWorkExperienceInfo(id: string) {
+    async deleteWorkExperienceInfo(id: string): Promise<WorkExperience> {
         try {
             const deletedWorkExperience = await prisma.workExperience.delete({
                 where: { id }
