@@ -1,15 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Education } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export class EditEducation {
-    user: any;
+interface User {
+  id: string;
+}
 
-    constructor(userObject: any) {
+export class EditEducation {
+    user: User;
+
+    constructor(userObject: User) {
         this.user = userObject;
     }
 
-    async addInfo(educationInfo: any) {
+    async addInfo(educationInfo: Omit<Education, 'id' | 'userId'>): Promise<Education> {
         try {
             const addedInfo = await prisma.education.create({
                 data: {
@@ -26,57 +30,58 @@ export class EditEducation {
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<Education[]> {
         try {
             const infoExists = await prisma.education.findMany({
                 where: {
                     userId: this.user.id,
-
                 }
             });
-            return infoExists
+            return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateEducationInfo(fields: any, id: any){
-        try{
+    async updateEducationInfo(fields: Partial<Omit<Education, 'id' | 'userId'>>, id: string): Promise<Education> {
+        try {
             const updatedEducation = await prisma.education.update({
-                where:{id: id},
-                data:{
+                where: { id },
+                data: {
                     ...fields,
                     from: fields.from ? new Date(fields.from) : undefined,
                     to: fields.to ? new Date(fields.to) : undefined                    
                 }
-            })
-            return updatedEducation
-        }catch(err){
-            console.error(err)
-        }finally{
-            prisma.$disconnect()
+            });
+            return updatedEducation;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        } finally {
+            await prisma.$disconnect();
         }
     }
 
-    async deleteEducationInfo(id: any){
-       try{ 
-        const deletedEducation = await prisma.education.delete({
-            where: {
-                id:id
-            }
-        })
-        return deletedEducation
-    }catch(err){
-        console.error(err)
-    }finally{
-        prisma.$disconnect()
+    async deleteEducationInfo(id: string): Promise<Education> {
+        try { 
+            const deletedEducation = await prisma.education.delete({
+                where: { id }
+            });
+            return deletedEducation;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        } finally {
+            await prisma.$disconnect();
+        }
     }
-}
 }
