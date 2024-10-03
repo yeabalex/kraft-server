@@ -17,6 +17,7 @@ import { cvRoutes } from './routes/cv/user';
 import { templateRoute } from './routes/template/template';
 import cors from 'cors'
 import connectPgSimple from 'connect-pg-simple'
+import { Pool } from 'pg';
 
 const path = require('path')
 
@@ -38,6 +39,25 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 
 const PgSession = connectPgSimple(session)
+
+// Add this code to create the session table if it doesn't exist
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+pool.query(`
+  CREATE TABLE IF NOT EXISTS "session" (
+    "sid" varchar NOT NULL COLLATE "default",
+    "sess" json NOT NULL,
+    "expire" timestamp(6) NOT NULL
+  )
+  WITH (OIDS=FALSE);
+  
+  ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+  CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+`)
+.then(() => console.log('Session table created or already exists'))
+.catch(err => console.error('Error creating session table:', err));
 
 app.use(session({
   store: new PgSession({
