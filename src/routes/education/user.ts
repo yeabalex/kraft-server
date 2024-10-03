@@ -25,7 +25,7 @@ educationRoute.post('/api/add/education',
       const res = [];
       for (const req of request.body.arr) {
         req.id = uuidv4();
-        req.userId = request.user.id;
+        //req.userId = request.user.id;
 
         const editEducation = new EditEducation(await request.user);
         const addedEducation = await editEducation.addInfo(req);

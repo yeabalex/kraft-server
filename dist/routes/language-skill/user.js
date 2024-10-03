@@ -31,7 +31,7 @@ exports.languageRoute.post('/api/add/language', (0, express_validator_1.check)('
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editLanguage = new user_1.EditLanguage(yield request.user);
             const addedLanguage = yield editLanguage.addInfo(req);
             res.push(addedLanguage);

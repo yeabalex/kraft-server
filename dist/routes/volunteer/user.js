@@ -31,7 +31,7 @@ exports.volunteerRoute.post('/api/add/volunteer', (0, express_validator_1.check)
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editVolunteer = new user_1.EditVolunteer(yield request.user);
             const addedVolunteer = yield editVolunteer.addInfo(req);
             res.push(addedVolunteer);

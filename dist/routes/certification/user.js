@@ -29,7 +29,7 @@ exports.certificationRoute.post('/api/add/certification', (0, express_validator_
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editCertification = new user_1.EditCertification(yield request.user);
             const addedCertification = yield editCertification.addInfo(req);
             res.push(addedCertification);

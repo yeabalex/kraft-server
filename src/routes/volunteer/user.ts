@@ -24,7 +24,7 @@ volunteerRoute.post('/api/add/volunteer',
             const res = [];
             for (const req of request.body.arr) {
                 req.id = uuidv4();
-                req.userId = request.user.id;
+                //req.userId = request.user.id;
 
                 const editVolunteer = new EditVolunteer(await request.user);
                 const addedVolunteer = await editVolunteer.addInfo(req);

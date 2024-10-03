@@ -21,7 +21,7 @@ softSkillRoute.post('/api/add/soft-skill',
             const res = [];
             for (const req of request.body.arr) {
                 req.id = uuidv4();
-                req.userId = request.user.id;
+                //req.userId = request.user.id;
 
                 const editSoftSkill = new EditSoftSkill(await request.user);
                 const addedSoftSkill = await editSoftSkill.addInfo(req);

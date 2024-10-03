@@ -21,7 +21,7 @@ projectRoute.post('/api/add/project',
             const res = [];
             for (const req of request.body.arr) {
                 req.id = uuidv4();
-                req.userId = request.user.id;
+                //req.userId = request.user.id;
 
                 const editProject = new EditProject(await request.user);
                 const addedProject = await editProject.addInfo(req);

@@ -31,7 +31,7 @@ exports.educationRoute.post('/api/add/education', (0, express_validator_1.check)
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editEducation = new user_1.EditEducation(yield request.user);
             const addedEducation = yield editEducation.addInfo(req);
             res.push(addedEducation);

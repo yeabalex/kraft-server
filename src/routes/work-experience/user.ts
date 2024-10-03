@@ -21,7 +21,7 @@ workExperienceRoute.post('/api/add/work-experience',  check('arr.*.position')
 	    const res = [];
     for(const req of request.body.arr){
             req.id = uuidv4();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
     
             const editWorkExperience = new EditWorkExperience(await request.user);
             const addedWorkExperience = await editWorkExperience.addInfo(req);

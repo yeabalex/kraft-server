@@ -31,7 +31,7 @@ exports.technicalSkillRoute.post('/api/add/technical-skill', (0, express_validat
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editTechnicalSkill = new user_1.EditTechnicalSkill(yield request.user);
             const addedTechnicalSkill = yield editTechnicalSkill.addInfo(req);
             res.push(addedTechnicalSkill);

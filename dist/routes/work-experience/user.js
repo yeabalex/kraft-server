@@ -31,7 +31,7 @@ exports.workExperienceRoute.post('/api/add/work-experience', (0, express_validat
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editWorkExperience = new user_1.EditWorkExperience(yield request.user);
             const addedWorkExperience = yield editWorkExperience.addInfo(req);
             res.push(addedWorkExperience);

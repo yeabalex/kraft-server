@@ -29,7 +29,7 @@ exports.projectRoute.post('/api/add/project', (0, express_validator_1.check)('ar
         const res = [];
         for (const req of request.body.arr) {
             req.id = (0, uuid_1.v4)();
-            req.userId = request.user.id;
+            //req.userId = request.user.id;
             const editProject = new user_1.EditProject(yield request.user);
             const addedProject = yield editProject.addInfo(req);
             res.push(addedProject);
