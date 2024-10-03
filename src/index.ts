@@ -38,11 +38,17 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.use(express.json())
 app.use(session({
-    secret: 'iamyeabsira',
+    secret: process.env.SESSION_SECRET || 'iamyeabsira',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000*60, sameSite: 'none', secure: true}
-  }));
+    cookie: { 
+        maxAge: 60000 * 60, 
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
+    }
+}));
 
 app.use(passport.initialize())
 app.use(passport.session())
