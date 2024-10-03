@@ -53,7 +53,7 @@ export class EditPersonalInfo {
             const updatedInfo = await prisma.personalInfo.update({
                 where:{userId:this.user.id},
                 data:{
-                    ...fields, dateOfBirth:new Date(fields.dateOfBirth)
+                    ...fields, dateOfBirth:fields.dateOfBirth.length > 0 ? new Date(fields.dateOfBirth) : undefined
                 }
             })
             return updatedInfo
