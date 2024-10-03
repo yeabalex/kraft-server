@@ -53,7 +53,7 @@ app.use(session({
       sameSite: 'none',
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      domain: process.env.NODE_ENV === 'production' ? 'kraftwerk.vercel.app' : undefined
+      //domain: process.env.NODE_ENV === 'production' ? 'kraftwerk.vercel.app' : undefined
   }
 }));
 
