@@ -40,21 +40,21 @@ app.use(express.json())
 const PgSession = connectPgSimple(session)
 
 app.use(session({
-    store: new PgSession({
-        conString: process.env.DATABASE_URL,
-        tableName: 'session'
-    }),
-    secret: 'iamyeabsira',
-    resave: false,
-    proxy: true,
-    saveUninitialized: false,
-    cookie: { 
-        maxAge: 1000 * 60 *60 * 24, 
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
-    }
+  store: new PgSession({
+      conString: process.env.DATABASE_URL,
+      tableName: 'session'
+  }),
+  secret: 'iamyeabsira',
+  resave: false,
+  proxy: true,
+  saveUninitialized: false,
+  cookie: { 
+      maxAge: 1000 * 60 *60 * 24, 
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      domain: process.env.NODE_ENV === 'production' ? 'kraftwerk.vercel.app' : undefined
+  }
 }));
 
 app.use(passport.initialize())
