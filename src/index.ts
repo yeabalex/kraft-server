@@ -50,7 +50,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: { 
       maxAge: 1000 * 60 *60 * 24, 
-      sameSite: 'lax',
+      sameSite: 'none',
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       domain: process.env.NODE_ENV === 'production' ? 'kraftwerk.vercel.app' : undefined
