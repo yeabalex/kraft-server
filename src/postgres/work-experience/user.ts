@@ -10,21 +10,23 @@ export class EditWorkExperience {
 
     async addInfo(workExperienceInfo: any) {
         try {
+            const { userId, ...restInfo } = workExperienceInfo;
             const addedInfo = await prisma.workExperience.create({
                 data: {
-                    ...workExperienceInfo,
+                    ...restInfo,
                     user: {
                         connect: {
                             id: this.user.id
                         }
                     },
-                    from: workExperienceInfo.from ? new Date(workExperienceInfo.from) : undefined,
-                    to: workExperienceInfo.to ? new Date(workExperienceInfo.to) : undefined
+                    from: restInfo.from ? new Date(restInfo.from) : undefined,
+                    to: restInfo.to ? new Date(restInfo.to) : undefined
                 }
             });
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
@@ -40,39 +42,41 @@ export class EditWorkExperience {
             return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateWorkExperienceInfo(fields: any, id: any) {
+    async updateWorkExperienceInfo(fields: any, id: string) {
         try {
+            const { userId, ...restFields } = fields;
             const updatedWorkExperience = await prisma.workExperience.update({
-                where: { id: id },
+                where: { id },
                 data: {
-                    ...fields,
-                    from: fields.from ? new Date(fields.from) : undefined,
-                    to: fields.to ? new Date(fields.to) : undefined
+                    ...restFields,
+                    from: restFields.from ? new Date(restFields.from) : undefined,
+                    to: restFields.to ? new Date(restFields.to) : undefined
                 }
             });
             return updatedWorkExperience;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteWorkExperienceInfo(id: any) {
+    async deleteWorkExperienceInfo(id: string) {
         try {
             const deletedWorkExperience = await prisma.workExperience.delete({
-                where: {
-                    id: id
-                }
+                where: { id }
             });
             return deletedWorkExperience;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
