@@ -1,14 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Language } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-export class EditLanguage {
-    user: any;
+interface User {
+  id: string;
+}
 
-    constructor(userObject: any) {
+export class EditLanguage {
+    user: User;
+
+    constructor(userObject: User) {
         this.user = userObject;
     }
 
-    async addInfo(languageInfo: any) {
+    async addInfo(languageInfo: Omit<Language, 'id' | 'userId'>): Promise<Language> {
         try {
             const addedInfo = await prisma.language.create({
                 data: {
@@ -23,12 +28,13 @@ export class EditLanguage {
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<Language[]> {
         try {
             const infoExists = await prisma.language.findMany({
                 where: {
@@ -38,15 +44,16 @@ export class EditLanguage {
             return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateLanguageInfo(fields: any, id: any) {
+    async updateLanguageInfo(fields: Partial<Omit<Language, 'id' | 'userId'>>, id: string): Promise<Language> {
         try {
             const updatedLanguage = await prisma.language.update({
-                where: { id: id },
+                where: { id },
                 data: {
                     ...fields
                 }
@@ -54,21 +61,21 @@ export class EditLanguage {
             return updatedLanguage;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteLanguageInfo(id: any) {
+    async deleteLanguageInfo(id: string): Promise<Language> {
         try {
             const deletedLanguage = await prisma.language.delete({
-                where: {
-                    id: id
-                }
+                where: { id }
             });
             return deletedLanguage;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }

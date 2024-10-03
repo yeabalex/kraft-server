@@ -1,5 +1,5 @@
 import { request, Router } from "express";
-import { EditTechnicalSkill } from "../../postgres/technical-skill/user"; // Adjust import path as per your project structure
+import { EditTechnicalSkill } from "../../postgres/technical-skill/user"; 
 import { body, validationResult, check } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 

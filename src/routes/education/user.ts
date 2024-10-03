@@ -2,6 +2,7 @@ import { request, Router } from "express";
 import { EditEducation } from "../../postgres/education/user"; // Adjust import path as per your project structure
 import { body, validationResult, check } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
+import { User } from "@prisma/client";
 
 export const educationRoute = Router();
 
@@ -75,14 +76,14 @@ educationRoute.put('/api/update/education',
         }
     });
 
-educationRoute.delete('/api/delete/education', (request, response)=>{
-    if (!request.user) return response.status(400).send('Unauthorized');
+educationRoute.delete('/api/delete/education',async (request, response)=>{
+    if (!request.user) return response.status(401).send('Unauthorized');
 
-    const deleteEducation = new EditEducation(request.user)
+    const deleteEducation = new EditEducation(request.user as User);
 
-    const deletedEducation = deleteEducation.deleteEducationInfo(request.query.id)
+    const deletedEducation = await deleteEducation.deleteEducationInfo(request.query.id as string);
 
-    return response.send(deletedEducation)
+    return response.json(deletedEducation);
 
 
 })

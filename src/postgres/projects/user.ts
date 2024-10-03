@@ -1,14 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Project } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-export class EditProject {
-    user: any;
+interface User {
+    id: string;
+}
 
-    constructor(userObject: any) {
+export class EditProject {
+    user: User;
+
+    constructor(userObject: User) {
         this.user = userObject;
     }
 
-    async addInfo(projectInfo: any) {
+    async addInfo(projectInfo: Omit<Project, 'id' | 'userId'>): Promise<Project> {
         try {
             const addedInfo = await prisma.project.create({
                 data: {
@@ -25,12 +30,13 @@ export class EditProject {
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<Project[]> {
         try {
             const infoExists = await prisma.project.findMany({
                 where: {
@@ -40,15 +46,16 @@ export class EditProject {
             return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateProjectInfo(fields: any, id: any) {
+    async updateProjectInfo(fields: Partial<Omit<Project, 'id' | 'userId'>>, id: string): Promise<Project> {
         try {
             const updatedProject = await prisma.project.update({
-                where: { id: id },
+                where: { id },
                 data: {
                     ...fields,
                     from: fields.from ? new Date(fields.from) : undefined,
@@ -58,21 +65,21 @@ export class EditProject {
             return updatedProject;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteProjectInfo(id: any) {
+    async deleteProjectInfo(id: string): Promise<Project> {
         try {
             const deletedProject = await prisma.project.delete({
-                where: {
-                    id: id
-                }
+                where: { id }
             });
             return deletedProject;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }

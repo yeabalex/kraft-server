@@ -1,14 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Volunteer } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-export class EditVolunteer {
-    user: any;
+interface User {
+  id: string;
+}
 
-    constructor(userObject: any) {
+export class EditVolunteer {
+    user: User;
+
+    constructor(userObject: User) {
         this.user = userObject;
     }
 
-    async addInfo(volunteerInfo: any) {
+    async addInfo(volunteerInfo: Omit<Volunteer, 'id' | 'userId'>): Promise<Volunteer> {
         try {
             const addedInfo = await prisma.volunteer.create({
                 data: {
@@ -25,12 +30,13 @@ export class EditVolunteer {
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<Volunteer[]> {
         try {
             const infoExists = await prisma.volunteer.findMany({
                 where: {
@@ -40,15 +46,16 @@ export class EditVolunteer {
             return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateVolunteerInfo(fields: any, id: any) {
+    async updateVolunteerInfo(fields: Partial<Omit<Volunteer, 'id' | 'userId'>>, id: string): Promise<Volunteer> {
         try {
             const updatedVolunteer = await prisma.volunteer.update({
-                where: { id: id },
+                where: { id },
                 data: {
                     ...fields,
                     from: fields.from ? new Date(fields.from) : undefined,
@@ -58,21 +65,21 @@ export class EditVolunteer {
             return updatedVolunteer;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteVolunteerInfo(id: any) {
+    async deleteVolunteerInfo(id: string): Promise<Volunteer> {
         try {
             const deletedVolunteer = await prisma.volunteer.delete({
-                where: {
-                    id: id
-                }
+                where: { id }
             });
             return deletedVolunteer;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }

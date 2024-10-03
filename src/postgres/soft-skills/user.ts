@@ -1,14 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, SoftSkill } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-export class EditSoftSkill {
-    user: any;
+interface User {
+  id: string;
+}
 
-    constructor(userObject: any) {
+export class EditSoftSkill {
+    user: User;
+
+    constructor(userObject: User) {
         this.user = userObject;
     }
 
-    async addInfo(softSkillInfo: any) {
+    async addInfo(softSkillInfo: Omit<SoftSkill, 'id' | 'userId'>): Promise<SoftSkill> {
         try {
             const addedInfo = await prisma.softSkill.create({
                 data: {
@@ -23,12 +28,13 @@ export class EditSoftSkill {
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<SoftSkill[]> {
         try {
             const infoExists = await prisma.softSkill.findMany({
                 where: {
@@ -38,15 +44,16 @@ export class EditSoftSkill {
             return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateSoftSkillInfo(fields: any, id: any) {
+    async updateSoftSkillInfo(fields: Partial<Omit<SoftSkill, 'id' | 'userId'>>, id: string): Promise<SoftSkill> {
         try {
             const updatedSoftSkill = await prisma.softSkill.update({
-                where: { id: id },
+                where: { id },
                 data: {
                     ...fields
                 }
@@ -54,21 +61,21 @@ export class EditSoftSkill {
             return updatedSoftSkill;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteSoftSkillInfo(id: any) {
+    async deleteSoftSkillInfo(id: string): Promise<SoftSkill> {
         try {
             const deletedSoftSkill = await prisma.softSkill.delete({
-                where: {
-                    id: id
-                }
+                where: { id }
             });
             return deletedSoftSkill;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }

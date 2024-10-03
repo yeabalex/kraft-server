@@ -1,17 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Certification } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+interface User {
+  id: string;
+}
+
 export class EditCertification {
-    user: any;
+    user: User;
 
-    
-
-    constructor(userObject: any) {
+    constructor(userObject: User) {
         this.user = userObject;
     }       
         
-    async addInfo(certificationInfo: any) {
+    async addInfo(certificationInfo: Omit<Certification, 'id' | 'userId'>): Promise<Certification> {
         try {
             const addedInfo = await prisma.certification.create({
                 data: {
@@ -28,12 +30,13 @@ export class EditCertification {
             return addedInfo;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async getInfo() {
+    async getInfo(): Promise<Certification[]> {
         try {
             const infoExists = await prisma.certification.findMany({
                 where: {
@@ -43,15 +46,16 @@ export class EditCertification {
             return infoExists;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async updateCertificationInfo(fields: any, id: any) {
+    async updateCertificationInfo(fields: Partial<Omit<Certification, 'id' | 'userId'>>, id: string): Promise<Certification> {
         try {
             const updatedCertification = await prisma.certification.update({
-                where: { id: id },
+                where: { id },
                 data: {
                     ...fields,
                     from: fields.from ? new Date(fields.from) : undefined,
@@ -61,21 +65,21 @@ export class EditCertification {
             return updatedCertification;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
     }
 
-    async deleteCertificationInfo(id: any) {
+    async deleteCertificationInfo(id: string): Promise<Certification> {
         try {
             const deletedCertification = await prisma.certification.delete({
-                where: {
-                    id: id
-                }
+                where: { id }
             });
             return deletedCertification;
         } catch (err) {
             console.error(err);
+            throw err;
         } finally {
             await prisma.$disconnect();
         }
