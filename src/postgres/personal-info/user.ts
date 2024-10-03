@@ -20,7 +20,7 @@ export class EditPersonalInfo {
                         id: this.user.id
                     }
                 },
-                dateOfBirth: new Date(userInfo.dateOfBirth)
+                dateOfBirth: userInfo.dateOfBirth.length > 0 ? new Date(userInfo.dateOfBirth) : undefined
             }
         })
 
