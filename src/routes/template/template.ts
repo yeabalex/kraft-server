@@ -38,6 +38,20 @@ templateRoute.get('/api/templates/:templateName', async (request, response)=> {
     return response.json(jsonData); 
 });
 
+templateRoute.get('/api/cv/:templateName', async (request, response)=> {
+	if(!request.user) return response.sendStatus(403);
+
+    const templateName = request.params.templateName
+    const cv = new EditPersonalInfo(await request.user);
+    const getTemplate = new Template(await request.user);
+    
+    const s = new CV(await request.user, await getTemplate.getTemplate(templateName))
+
+    const data = await s.cvContents()
+    const jsonData = await JSON.parse(data)
+    return response.json(jsonData); 
+});
+
 templateRoute.post('/api/add/template',body('name').notEmpty().isString(), async (req, res)=>{
     if(!req.user) return res.sendStatus(403);
 
