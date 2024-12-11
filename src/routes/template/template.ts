@@ -35,6 +35,7 @@ templateRoute.get('/api/templates/:templateName', async (request, response)=> {
    // console.log(jsonData[0])
     
     response.render(`template-1/${templateName}`, {...jsonData[0]});
+    return response.json(jsonData); 
 });
 
 templateRoute.post('/api/add/template',body('name').notEmpty().isString(), async (req, res)=>{
